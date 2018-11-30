@@ -1,8 +1,11 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -30,10 +33,16 @@ public class MenuScreen extends ScreenBeta {
 
     @Override
     public void initialize() {
+        Music menuMusic = Gdx.audio.newMusic(Gdx.files.internal("bgMusic.mp3"));
+        menuMusic.setLooping(true);
+        menuMusic.play();
+        menuMusic.setVolume(0.4f);
+
 
         uiTable.background(skin.getDrawable("window-c"));
 
         uiStage.addActor(tableContainer);
+
 
         startButton = new TextButton("Play", skin.get(("default"), TextButton.TextButtonStyle.class));
         startButton.setOrigin(Align.center);
@@ -65,6 +74,10 @@ public class MenuScreen extends ScreenBeta {
         uiTable.row().padTop(HEIGHT / 12).padBottom(HEIGHT / 12);
         uiTable.add(exitButton).size(exitButton.getWidth(), exitButton.getHeight()).expandX();
 
+        ActorBeta title = new ActorBeta(WIDTH /4,HEIGHT -150, uiStage);
+        title.loadTexture("sprites/title.png");
+        title.setScale(1.5f);
+
         /**PARTICLE EFFECTS**/
         fire = new FireParticle();
         fire.centerAtActor(startButton);
@@ -85,18 +98,23 @@ public class MenuScreen extends ScreenBeta {
         warp.setScale(2.0f);
 
         mainStage.addActor(fire);
-        mainStage.addActor(flame);
-        mainStage.addActor(warp);
+        //mainStage.addActor(flame);
+        //mainStage.addActor(warp);
     }
 
     public void setUpButtons() {
 
+
         startButton.addListener(new ActorGestureListener() {
-            @Override
+
             public void touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 super.touchDown(event, x, y, pointer, button);
 
+                Music sound = Gdx.audio.newMusic(Gdx.files.internal("start.wav"));
+                sound.play();
+
                 if(MyGame.gameScreen == null) {
+
                     MyGame.gameScreen = new GameScreen();
                     MyGame.setActiveScreen(MyGame.gameScreen);
                 }
@@ -110,7 +128,8 @@ public class MenuScreen extends ScreenBeta {
             @Override
             public void touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 super.touchDown(event, x, y, pointer, button);
-
+                Music sound = Gdx.audio.newMusic(Gdx.files.internal("powerup.wav"));
+                sound.play();
                 if(MyGame.howToPlayScreen == null) {
                     MyGame.howToPlayScreen = new HowToPlayScreen();
                     MyGame.setActiveScreen(MyGame.howToPlayScreen);
@@ -125,7 +144,9 @@ public class MenuScreen extends ScreenBeta {
             @Override
             public void touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 super.touchDown(event, x, y, pointer, button);
-
+                Music sound = Gdx.audio.newMusic(Gdx.files.internal("powerup.wav"));
+                sound.play();
+               // uiStage.addAction(Actions.fadeOut(1.0f));
                 if(MyGame.storyScreen == null) {
                     MyGame.storyScreen = new StoryScreen();
                     MyGame.setActiveScreen(MyGame.storyScreen);
@@ -133,13 +154,14 @@ public class MenuScreen extends ScreenBeta {
                 else{
                     MyGame.setActiveScreen(MyGame.storyScreen);
                 }
+
             }
         });
     }
 
     @Override
     public void render(float delta) {super.render(delta);
-        Gdx.gl.glClearColor(1, 1, 1, 1);}
+        Gdx.gl.glClearColor(0, 0, 0, 1);}
 
     @Override
     public void show() {

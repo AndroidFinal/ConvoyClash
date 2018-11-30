@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -26,24 +27,31 @@ public class StoryScreen extends ScreenBeta {
 
     @Override
     public void initialize() {
+        ActorBeta story = new ActorBeta(WIDTH /3 +70,HEIGHT -150, mainStage);
+        story.loadTexture("sprites/story.png");
+        story.setScale(1.5f);
+        ActorBeta storytext = new ActorBeta(WIDTH /4,HEIGHT /2 -75 , mainStage);
+        storytext.loadTexture("sprites/storytext.png");
+        storytext.setScale(1.9f);
+       // uiTable.background(skin.getDrawable("window-c"));
 
-        uiTable.background(skin.getDrawable("window-c"));
-
-        uiStage.addActor(tableContainer);
+       // uiStage.addActor(tableContainer);
+     //  tableContainer.setX(0);
 
         exitButton = new TextButton("Main Menu", skin.get(("default"), TextButton.TextButtonStyle.class));
         exitButton.setOrigin(Align.center);
         exitButton.setTransform(true);
         exitButton.setScale(3);
-
+        exitButton.setPosition(WIDTH / 2 - 75, 75);
+        uiStage.addActor(exitButton);
         setUpButtons();
 
         label = new Label("LABEL", labelStyle);
 
         //Add to TABLE
 
-        uiTable.row().padTop(HEIGHT / 12).padBottom(HEIGHT / 12);
-        uiTable.add(exitButton).size(exitButton.getWidth(), exitButton.getHeight()).expandX();
+        //uiTable.row().padTop(HEIGHT / 12).padBottom(HEIGHT / 12);
+        //uiTable.add(exitButton).size(exitButton.getWidth(), exitButton.getHeight()).expandX();
 
         /**PARTICLE EFFECTS**/
         fire = new FireParticle();
@@ -61,7 +69,8 @@ public class StoryScreen extends ScreenBeta {
             @Override
             public void touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 super.touchDown(event, x, y, pointer, button);
-
+                Music sound = Gdx.audio.newMusic(Gdx.files.internal("powerup.wav"));
+                sound.play();
                 MyGame.setActiveScreen(MyGame.menuScreen);
 
             }
